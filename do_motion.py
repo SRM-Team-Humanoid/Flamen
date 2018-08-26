@@ -5,6 +5,9 @@ from time import sleep
 
 '''constrints for m3 & m4- (-132.4, 140.91)'''
 
+Y=17*2.54
+X=23*2.54
+
 def init():
 	ports=pypot.dynamixel.get_available_ports()
 	if not ports :
@@ -21,6 +24,17 @@ def init():
 	dxl.set_goal_position({1:0, 2:0, 3:-90, 4:-90, 5:90, 6:0, 7:0})
 
 	raw_input()
+
+def pixel_to_real(x,y):
+	x=(x-640/2)
+	y=-(y-(480))
+	
+	
+	x= (x*(X/640))
+	y= (y*(Y/480))
+	
+	return x,y
+
 
 def get_th(x1,y1,x2,y2):
 	l1=9.3
@@ -42,8 +56,11 @@ def get_th(x1,y1,x2,y2):
 
 if __name__=='__main__':
 	init()
-	x1,y1=28,5
-	x2,y2=5,5
+	x1,y1=379,173
+	x2,y2=385,447
+	
+	x1,y1=pixel_to_real(x1,x1)
+	x2,y2=pixel_to_real(x2,y2)
 	
 	try:
 		th1,th2,th3=get_th(x1,y1,x2,y2)
