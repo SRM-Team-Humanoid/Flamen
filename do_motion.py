@@ -1,7 +1,7 @@
-from math import sqrt,atan,acos,degrees,pi,asin,sin,tan,cos
 import pypot.dynamixel
+from math import sqrt,atan,acos,degrees,pi,asin,sin,tan,cos
 from time import sleep
-
+from read import read_from_file
 
 '''constrints for m3 & m4- (-132.4, 140.91)'''
 
@@ -54,35 +54,28 @@ def get_th(x1,y1,x2,y2):
 	#return (0,-45,-45)
 
 
+
+
 if __name__=='__main__':
 	init()
 	x1,y1=379,173
 	x2,y2=385,447
 	
-	x1,y1=pixel_to_real(x1,x1)
+	x1,y1=pixel_to_real(x1,y1)
 	x2,y2=pixel_to_real(x2,y2)
 	
 	try:
 		th1,th2,th3=get_th(x1,y1,x2,y2)
 		print th1,th2,th3
-		raw_input()
-		file=open("mot.txt",'r')
-		angles=file.read()
+		raw_input()		
 
-		print angles
-		angles=angles.replace('m1',str(th1))
-		angles=angles.replace('m2',str(th2))
-		angles=angles.replace('m3',str(th3))
-		print angles
-		ang_list=angles.split('\n')
-
-		for li in ang_list:
-			anglesl=li.split()
-			try:
-				ang_dict={1:float(anglesl[0]),2:float(anglesl[1]),3:float(anglesl[2]),4:float(anglesl[3]),5:float(anglesl[4]),6:float(anglesl[5]),7:float(anglesl[6])}
-				dxl.set_goal_position(ang_dict)
-			except Exception as e:
-				print e
-			sleep(2)
 	except ValueError:
-		print "out of range"
+		raise "Out of range...stopping\n"
+
+	#th1,th2,th3=34.32423,43.23423,56.54523
+	motion_set=read_from_file("mot.txt",th1,th2,th3)
+	
+	for motion in motion_set:
+		dxl.set_goal_position(motion[0])
+		sleep(motion[1])
+		#print motion[0],"\t\t\t",motion[1]
