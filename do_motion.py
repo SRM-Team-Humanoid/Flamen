@@ -18,21 +18,26 @@ def init():
 	global dxl
 	dxl=pypot.dynamixel.DxlIO(ports[0])
 	ids=dxl.scan(range(25))
-	dxl.set_moving_speed({1:70,2:70,3:70,4:70,5:70,6:70,7:70})
+	dxl.set_moving_speed({1:20,2:20,3:20,4:20,5:20,6:20,7:20})
 	print ids
 
+	dxl.set_goal_position({1:0, 2:80, 3:-90, 4:-90, 5:-90, 6:0, 7:0})
+	sleep(5)
+	dxl.set_goal_position({1:0, 2:80, 3:-90, 4:-90, 5:90, 6:0, 7:0})
+	sleep(5)
 	dxl.set_goal_position({1:0, 2:0, 3:-90, 4:-90, 5:90, 6:0, 7:0})
 
 	raw_input()
+	dxl.set_moving_speed({1:70,2:70,3:70,4:70,5:70,6:70,7:70})
 
 def pixel_to_real(x,y):
 	x=(x-640/2)
 	y=-(y-(480))
-	
-	
+
+
 	x= (x*(X/640))
 	y= (y*(Y/480))
-	
+
 	return x,y
 
 
@@ -58,23 +63,25 @@ def get_th(x1,y1,x2,y2):
 
 if __name__=='__main__':
 	init()
-	x1,y1=379,173
+	'''x1,y1=379,173
 	x2,y2=385,447
-	
+
 	x1,y1=pixel_to_real(x1,y1)
-	x2,y2=pixel_to_real(x2,y2)
-	
+	x2,y2=pixel_to_real(x2,y2)'''
+	x1,y1,x2,y2=29,24,8,13
 	try:
 		th1,th2,th3=get_th(x1,y1,x2,y2)
+		if th2>130 or th2<-130 or th3<-130 or th3>130:
+			raise "Mechanical constraint...exiting"
 		print th1,th2,th3
-		raw_input()		
+		raw_input()
 
 	except ValueError:
 		raise "Out of range...stopping\n"
 
 	#th1,th2,th3=34.32423,43.23423,56.54523
 	motion_set=read_from_file("mot.txt",th1,th2,th3)
-	
+
 	for motion in motion_set:
 		dxl.set_goal_position(motion[0])
 		sleep(motion[1])
