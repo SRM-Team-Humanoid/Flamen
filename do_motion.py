@@ -1,76 +1,21 @@
-import pypot.dynamixel
-from math import sqrt,atan,acos,degrees,pi,asin,sin,tan,cos
 from time import sleep
-from read import read_from_file
+from Read import Read
+from Dynamixel import Dynamixel
+from Equations import Equations
 
 '''constrints for m3 & m4- (-132.4, 140.91)'''
 
-Y=17*2.54
-X=23*2.54
-
-def init():
-	ports=pypot.dynamixel.get_available_ports()
-	if not ports :
-		raise IOError("No ports found")
-
-	print "Connecting to ",ports[0]
-
-	global dxl
-	dxl=pypot.dynamixel.DxlIO(ports[0])
-	ids=dxl.scan(range(25))
-	dxl.set_moving_speed({1:20,2:20,3:20,4:20,5:20,6:20,7:20})
-	print ids
-
-	dxl.set_goal_position({1:0, 2:80, 3:-90, 4:-90, 5:-90, 6:0, 7:0})
-	sleep(5)
-	dxl.set_goal_position({1:0, 2:80, 3:-90, 4:-90, 5:90, 6:0, 7:0})
-	sleep(5)
-	dxl.set_goal_position({1:0, 2:0, 3:-90, 4:-90, 5:90, 6:0, 7:0})
-
-	raw_input()
-	dxl.set_moving_speed({1:70,2:70,3:70,4:70,5:70,6:70,7:70})
-
-def pixel_to_real(x,y):
-	x=(x-640/2)
-	y=-(y-(480))
-
-
-	x= (x*(X/640))
-	y= (y*(Y/480))
-
-	return x,y
-
-
-def get_th(x1,y1,x2,y2):
-	l1=9.3
-	l2=7
-
-
-	tha=float(atan((y1-y2)/(x1-x2)))
-	x=(x2+2*cos(tha))
-	y=(y2+2*sin(tha))
-	dist=float(sqrt((x*x)+(y*y)))
-	th2=float(acos(((dist*dist) - (l1*l1) - (l2*l2))/(2*l1*l2)))
-	d1=float(acos(y/dist))
-	d2=float(acos((dist**2 + l1**2 - l2**2)/(2*l1*dist)))
-	th1=(d1-d2)
-	th3=pi/2-tha-th1-th2
-	return (degrees(th1),-degrees(th2),-degrees(th3))
-	#return (0,-45,-45)
-
-
-
 
 if __name__=='__main__':
-	init()
+	dxl=Dynamixel()
 	'''x1,y1=379,173
 	x2,y2=385,447
 
-	x1,y1=pixel_to_real(x1,y1)
-	x2,y2=pixel_to_real(x2,y2)'''
-	x1,y1,x2,y2=29,24,8,13
+	x1,y1=Equations.pixel_to_real(x1,y1)
+	x2,y2=Equations.pixel_to_real(x2,y2)'''
+	x1,y1,x2,y2=28,5,5,5
 	try:
-		th1,th2,th3=get_th(x1,y1,x2,y2)
+		th1,th2,th3=Equations.get_th(x1,y1,x2,y2)
 		if th2>130 or th2<-130 or th3<-130 or th3>130:
 			raise "Mechanical constraint...exiting"
 		print th1,th2,th3
@@ -80,9 +25,9 @@ if __name__=='__main__':
 		raise "Out of range...stopping\n"
 
 	#th1,th2,th3=34.32423,43.23423,56.54523
-	motion_set=read_from_file("mot.txt",th1,th2,th3)
+	motion_set=Read.read_from_file("mot.txt",th1,th2,th3)
 
 	for motion in motion_set:
-		dxl.set_goal_position(motion[0])
+		dxl.set_position(motion[0])
 		sleep(motion[1])
 		#print motion[0],"\t\t\t",motion[1]
