@@ -2,6 +2,8 @@
 # find the code so i wrote this again
 # it would have taken me more time to find it
 
+
+# positive angle - anticlockwise rotation
 import pypot.dynamixel
 from time import sleep
 class Dynamixel:
@@ -22,13 +24,13 @@ class Dynamixel:
 	def initial_position(self):
 		#self.set_speed(20)
 
-		self.set_position( [0,80,-90,-90,-90,0,0] )
-		sleep(5)
-		self.set_position( [0,80,-90,-90,90,0,0] )
-		sleep(5)
+		#self.set_position( [0,80,-90,-90,-90,0,0] )
+		#sleep(5)
+		#self.set_position( [0,80,-90,-90,90,0,0] )
+		#sleep(5)
 		self.set_position( [0,0,-90,-90,90,0,0] )
 
-		raw_input()
+		raw_input("press enter to continue ")
 		self.set_speed(70)
 
 	def set_speed(self,speed):

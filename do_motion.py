@@ -21,7 +21,7 @@
 #
 # Yes I was so jobless that I did all this
 
-from time import sleep
+from time import sleep,time
 from Read import Read
 from Dynamixel import Dynamixel
 from Equations import Equations
@@ -36,21 +36,26 @@ if __name__=='__main__':
 	detection=Bg_sub.bg_sub()
 	x1,y1,x2,y2=detection[0][0],detection[0][1],detection[1][0],detection[1][1]
 	try:
+		x1,y1=Equations.pixel_to_real(x1,y1)
+		x2,y2=Equations.pixel_to_real(x2,y2)
 		th1,th2,th3=Equations.get_th(x1,y1,x2,y2)
+		print x1,y1,x2,y2
+		print th1,th2,th3
 		if th2>130 or th2<-130 or th3<-130 or th3>130:
 			raise "Mechanical constraint...exiting"
-		print th1,th2,th3
-		raw_input()
+		
+		raw_input("press Enter to continue ")
 
 	except ValueError:
 		raise "Out of range...stopping\n"
 
-	#th1,th2,th3=34.32423,43.23423,56.54523
 	motion_set=Read.read_from_file("mot.txt",th1,th2,th3)
 
+	itr=0
+	
 	for motion in motion_set:
+		itr+=1
 		dxl.set_position(motion[0])
 		sleep(motion[1])
 		#print motion[0],"\t\t\t",motion[1]
 
-	dxl.initial_postion()
