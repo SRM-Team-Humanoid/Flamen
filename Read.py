@@ -1,4 +1,8 @@
 
+# this function is in a class just because 
+# all other functions are in classes
+# uniformity you know ;P
+
 class Read:
 	@staticmethod
 	def read_from_file(filename,th1,th2,th3):
