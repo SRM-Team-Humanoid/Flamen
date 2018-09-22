@@ -13,7 +13,6 @@ class Dynamixel:
 			raise IOError("No ports found")
 
 		print "Connecting to ",ports[0]
-
 		self.dxl=pypot.dynamixel.DxlIO(ports[0])
 		self.ids=self.dxl.scan(range(25))
 		print self.ids
@@ -30,7 +29,7 @@ class Dynamixel:
 		#sleep(5)
 		self.set_position( [0,0,-90,-90,90,0,0] )
 
-		raw_input("press enter to continue ")
+		raw_input(__name__ + " press enter to continue ")
 		self.set_speed(70)
 
 	def set_speed(self,speed):
@@ -41,4 +40,5 @@ class Dynamixel:
 
 	def set_position(self,positions):
 		position_dict=dict(zip(self.ids,positions))
+		self.set_speed(70)
 		self.dxl.set_goal_position(position_dict)

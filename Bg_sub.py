@@ -6,7 +6,7 @@ from skimage.measure import compare_ssim
 class Bg_sub:
 	@staticmethod
 	def bg_sub():
-		cap=cv2.VideoCapture(1)
+		cap=cv2.VideoCapture(2)
 		ret=True
 		while ret:
 			ret,cam=cap.read()
