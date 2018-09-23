@@ -17,7 +17,7 @@ class Equations:
 		return x,y
 
 	@staticmethod
-	def get_th(x1,y1,x2,y2):
+	def get_th(x1,y1,x2,y2, point_of_grasp=3):
 		l1=9.3
 		l2=7
 		print "x1,y1 = ",x1, y1
@@ -26,8 +26,8 @@ class Equations:
 		tha=float(atan((y1-y2)/(x1-x2)))
 		if	tha<0:
 			tha+=pi
-		x=(x2+3*cos(tha))
-		y=(y2+3*sin(tha))
+		x=(x2+point_of_grasp*cos(tha))
+		y=(y2+point_of_grasp*sin(tha))
 		
 		
 		print "x,y = ",x,y

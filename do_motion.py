@@ -35,29 +35,56 @@ if __name__=='__main__':
 	
 	detection=Bg_sub.bg_sub()
 	x1,y1,x2,y2=detection[0][0],detection[0][1],detection[1][0],detection[1][1]
-	try:
-		x1,y1=Equations.pixel_to_real(x1,y1)
-		x2,y2=Equations.pixel_to_real(x2,y2)
-		th1,th2,th3=Equations.get_th(x1,y1,x2,y2)
-		print "coordinates - ", x1,y1,x2,y2
-		print "angles - ", th1,th2,th3
-		if th2>130 or th2<-130 or th3<-130 or th3>130:
-			raise "Mechanical constraint...exiting"
-		
-		raw_input("press Enter to continue ")
 
-	except ValueError:
-		raise "Out of range...stopping\n"
+	x1,y1=Equations.pixel_to_real(x1,y1)
+	x2,y2=Equations.pixel_to_real(x2,y2)
+	th1,th2,th3=Equations.get_th(x1,y1,x2,y2)
+	print "coordinates - ", x1,y1,x2,y2
+	print "angles - ", th1,th2,th3
 	
+	raw_input("press Enter to continue ")
+	
+	if th2>130 or th2<-130 or th3<-130 or th3>130:
+		th11,th22,th33=Equations.get_th(x1,y1,x2,y2, point_of_grasp=11)
+		motion_set=Read.read_from_file("close.mot",th11-2,th22,th33)
+
+		for motion in motion_set:
+			dxl.set_position(motion[0])
+			sleep(motion[1])
+
+	else:
+		motion_set=Read.read_from_file("normal.mot",th1,th2,th3)
+
+		for motion in motion_set:
+			dxl.set_position(motion[0])
+			sleep(motion[1])
+
+
+
+
+	motion_set=Read.read_from_file("flap.mot",th1,th2,th3)
+	
+	for motion in motion_set:
+		dxl.set_position(motion[0])
+		sleep(motion[1])
+
+
+
+
+
+
+
+
+
 	'''signs=[
-			[1,1,1],
-			[1,1,-1],
-			[1,-1,1],
-			[1,-1,-1],
-			[-1,1,1],
-			[-1,1,-1],
-			[-1,-1,1],
-			[-1,-1,-1]
+				[1,1,1],
+				[1,1,-1],
+				[1,-1,1],
+				[1,-1,-1],
+				[-1,1,1],
+				[-1,1,-1],
+				[-1,-1,1],
+				[-1,-1,-1]
 	]
 	
 	dxl.set_position([0,85,0,0,-90,-90,0])
@@ -69,13 +96,3 @@ if __name__=='__main__':
 		raw_input("press enter to for next ")
 	
 	'''
-	motion_set=Read.read_from_file("mot.txt",th1,th2,th3)
-
-	itr=0
-	
-	for motion in motion_set:
-		itr+=1
-		dxl.set_position(motion[0])
-		sleep(motion[1])
-		#print motion[0],"\t\t\t",motion[1]
-
