@@ -24,10 +24,12 @@ class Equations:
 		print "x2,y2 = ",x2, y2
 
 		tha=float(atan((y1-y2)/(x1-x2)))
-		if  tha<0:
+		if	tha<0:
 			tha+=pi
 		x=(x2+3*cos(tha))
 		y=(y2+3*sin(tha))
+		
+		
 		print "x,y = ",x,y
 		dist=float(sqrt((x*x)+(y*y)))
 		print "dist = ",dist
@@ -41,7 +43,10 @@ class Equations:
 		print "th1 = ",th1
 		#if tha<0:
 		#	tha+=pi
-		print "tha = ",tha	
+		print "tha = ",tha
+		if	x<0:
+			th1=-th1
+			th2=-th2	
 		th3=pi/2-tha-th1-th2
 		return (-degrees(th1),-degrees(th2),-degrees(th3))
 		#return (0,-45,-45)
