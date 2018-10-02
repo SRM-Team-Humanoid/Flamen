@@ -17,7 +17,7 @@ class Dynamixel:
 		self.ids=self.dxl.scan(range(25))
 		print self.ids
 
-		self.set_speed(70)
+		self.set_speed(75)
 		self.initial_position()
 
 	def initial_position(self):
@@ -27,7 +27,7 @@ class Dynamixel:
 		#sleep(5)
 		#self.set_position( [0,80,-90,-90,90,0,0] )
 		#sleep(5)
-		self.set_position( [0,0,-90,-90,90,0,0] )
+		self.set_position( [0,0,-90,-80,90,0,0] )
 
 		raw_input(__name__ + " press enter to continue ")
 		self.set_speed(70)

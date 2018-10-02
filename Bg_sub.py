@@ -6,17 +6,19 @@ from skimage.measure import compare_ssim
 class Bg_sub:
 	@staticmethod
 	def bg_sub():
-		cap=cv2.VideoCapture(1)
+		cap=cv2.VideoCapture(3)
 		ret=True
 		while ret:
 			ret,cam=cap.read()
 			#yuv=cv2.cvtColor(cam,cv2.COLOR_BGR2YUV)
 			cv2.imshow("yuv",cam)
 			#mask = cv2.inRange(cam, (np.array([97,46,17])), (np.array([117,46,17])))
-			if cv2.waitKey(1)==ord("c"):
+			if cv2.waitKey(5)==ord("c"):
 				cv2.imwrite("without_fan.jpg",cam)
-			if cv2.waitKey(1)==ord("f"):
+				print 'without fan'
+			if cv2.waitKey(5)==ord("d"):
 				cv2.imwrite("with_fan.jpg",cam)
+				print 'with fan'
 			if cv2.waitKey(5)==27:
 				break
 		cap.release()
@@ -54,18 +56,25 @@ class Bg_sub:
 					sum1= im1.sum()
 					sum2=im2.sum()
 					if sum1>sum2:
-						top1=tuple(c[c[:, :, 0].argmin()][0])
-						bottom1=tuple(c[c[:, :, 0].argmax()][0])
+						top1=tuple(c[c[:, :, 1].argmin()][0])
+						bottom1=tuple(c[c[:, :, 0].argmin()][0])
+						if top1[0]<320:
+							top1=tuple(c[c[:, :, 0].argmin()][0])
+							bottom1=tuple(c[c[:, :, 1].argmax()][0])
 						cv2.circle(image2, top1, 3, (255, 0, 0), -1)
 						cv2.circle(image2, bottom1, 3, (0, 0, 255), -1)
 						print "Top: ",top1
 						print "Bottom: ",bottom1
 					else:
-						top1=tuple(c[c[:, :, 0].argmax()][0])
-						bottom1=tuple(c[c[:, :, 0].argmin()][0])
+						top1=tuple(c[c[:, :, 0].argmin()][0])
+						bottom1=tuple(c[c[:, :, 1].argmax()][0])
+						if top1[0]>320:
+							 top1=tuple(c[c[:, :, 1].argmin()][0])
+							 bottom1=tuple(c[c[:, :, 0].argmin()][0])
+						print "been there"
 						cv2.circle(image2, top1, 3, (255, 0, 0), -1)
 						cv2.circle(image2, bottom1, 3, (0, 0, 255), -1)
-						print "Top: ",top1
+						print "Top: ",top1,"else_part"
 						print "Bottom: ",bottom1
 
 					print "hori"
@@ -80,14 +89,21 @@ class Bg_sub:
 					sum2=im2.sum()
 					if sum1>sum2:
 						top1=tuple(c[c[:, :, 1].argmin()][0])
-						bottom1=tuple(c[c[:, :, 1].argmax()][0])
+						bottom1=tuple(c[c[:, :, 0].argmin()][0])
+						if top1[0]<320:
+							 top1=tuple(c[c[:, :, 0].argmin()][0])
+							 bottom1=tuple(c[c[:, :, 1].argmax()][0])
+						print "been here"
 						cv2.circle(image2, top1, 3, (255, 0, 0), -1)
 						cv2.circle(image2, bottom1, 3, (0, 0, 255), -1)
 						print "Top: ",top1
 						print "Bottom: ",bottom1
 					else:
-						top1=tuple(c[c[:, :, 1].argmax()][0])
-						bottom1=tuple(c[c[:, :, 1].argmin()][0])
+						top1=tuple(c[c[:, :, 1].argmin()][0])
+						bottom1=tuple(c[c[:, :, 0].argmin()][0])
+						if top1[0]< 320:
+							top1=tuple(c[c[:, :, 0].argmin()][0])
+							bottom1=tuple(c[c[:, :, 1].argmax()][0])
 						cv2.circle(image2, top1, 3, (255, 0, 0), -1)
 						cv2.circle(image2, bottom1, 3, (0, 0, 255), -1)
 						print "Top: ",top1

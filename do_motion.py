@@ -4,7 +4,7 @@
 #
 # Licensed under the ApashyamKiriKiri License, Version 1.13.[insertRandomNumberHere]
 # you may not use this file except in compliance with the License.
-# 
+#
 # This is a proprietry code. No one except the Team Leads, Domain Heads
 # or Coding Domain Senior Balak or Balikas of SRMTH are supposed to read this.
 #
@@ -32,40 +32,37 @@ from Bg_sub import Bg_sub
 
 if __name__=='__main__':
 	dxl=Dynamixel()
-	
+
 	detection=Bg_sub.bg_sub()
 	x1,y1,x2,y2=detection[0][0],detection[0][1],detection[1][0],detection[1][1]
 
 	x1,y1=Equations.pixel_to_real(x1,y1)
 	x2,y2=Equations.pixel_to_real(x2,y2)
-	th1,th2,th3=Equations.get_th(x1,y1,x2,y2)
+	th1,th2,th3=Equations.get_th(x1,y1,x2,y2,1.5)
 	print "coordinates - ", x1,y1,x2,y2
 	print "angles - ", th1,th2,th3
-	
-	raw_input("press Enter to continue ")
-	
-	if th2>130 or th2<-130 or th3<-130 or th3>130:
-		th11,th22,th33=Equations.get_th(x1,y1,x2,y2, point_of_grasp=11)
-		motion_set=Read.read_from_file("close.mot",th11-2,th22,th33)
 
-		for motion in motion_set:
-			dxl.set_position(motion[0])
-			sleep(motion[1])
+	raw_input("press Enter to continue ")
+
+	if th2>130 or th2<-130 or th3<-130 or th3>130:
+		raise ("Mechanical constraint")
 
 	else:
-		motion_set=Read.read_from_file("normal.mot",th1,th2,th3)
+		motion_set=Read.read_from_file("normal.mot",th1+6.4,th2,th3)
 
 		for motion in motion_set:
 			dxl.set_position(motion[0])
+			#raw_input()
 			sleep(motion[1])
 
 
 
 
-	motion_set=Read.read_from_file("flap.mot",th1,th2,th3)
-	
+	motion_set=Read.read_from_file("flap2.mot",th1,th2,th3)
+
 	for motion in motion_set:
 		dxl.set_position(motion[0])
+		#raw_input('flapping now')
 		sleep(motion[1])
 
 
