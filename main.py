@@ -48,7 +48,7 @@ if __name__=='__main__':
 		raise ("Mechanical constraint")
 
 	else:
-		motion_set=Read.read_from_file("normal.mot",th1+6.4,th2,th3)
+		motion_set=Read.read_from_file("mot/normal.mot",th1+6.4,th2,th3)
 
 		for motion in motion_set:
 			dxl.set_position(motion[0])
@@ -58,7 +58,7 @@ if __name__=='__main__':
 
 
 
-	motion_set=Read.read_from_file("flap2.mot",th1,th2,th3)
+	motion_set=Read.read_from_file("mot/flap2.mot",th1,th2,th3)
 
 	for motion in motion_set:
 		dxl.set_position(motion[0])

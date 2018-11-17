@@ -14,18 +14,18 @@ class Bg_sub:
 			cv2.imshow("yuv",cam)
 			#mask = cv2.inRange(cam, (np.array([97,46,17])), (np.array([117,46,17])))
 			if cv2.waitKey(5)==ord("c"):
-				cv2.imwrite("without_fan.jpg",cam)
+				cv2.imwrite("img/without_fan.jpg",cam)
 				print 'without fan'
 			if cv2.waitKey(5)==ord("d"):
-				cv2.imwrite("with_fan.jpg",cam)
+				cv2.imwrite("img/with_fan.jpg",cam)
 				print 'with fan'
 			if cv2.waitKey(5)==27:
 				break
 		cap.release()
 		cv2.destroyAllWindows()
 
-		image1 = cv2.imread("without_fan.jpg")
-		image2 = cv2.imread("with_fan.jpg")
+		image1 = cv2.imread("img/without_fan.jpg")
+		image2 = cv2.imread("img/with_fan.jpg")
 		grayA = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
 		grayB = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 		#cv2.imwrite("grayA.jpg",grayA)
@@ -115,7 +115,7 @@ class Bg_sub:
 				else:
 					output=(top1,bottom1,"Seedha")
 				
-		cv2.imwrite("final.jpg",image2)
+		cv2.imwrite("img/final.jpg",image2)
 
 		cv2.waitKey(0)
 
