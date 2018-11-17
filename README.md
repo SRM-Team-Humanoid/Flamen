@@ -1,4 +1,3 @@
-# IROS_Fan_new
+# Flamen
 
-I made the readme just to increase my contributions. I'm in no mood explaining what it does.<br>
-I anyways write beautiful easy to understand codes so you should be able to figure out things yourself.
+7 DOF robotic arm for IROS Fan Robotic Challange, 2018.
